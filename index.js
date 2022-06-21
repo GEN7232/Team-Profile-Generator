@@ -5,7 +5,9 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern')
 const team = [];
-const buildPage = require("./src/page_template");
+const render = require("./src/page_template");
+const outputDir = path.resolve(__dirname, "output");
+const outputPath = path.join(outputDir, "team.html");
 
 const mainMenu = () => {
     inquirer.prompt({
@@ -25,10 +27,6 @@ const mainMenu = () => {
         }
     }) 
 } 
-
-const buildTeam = () => {
-    fs.writeFileSync(path.join(__dirname, "/dist/", "team.html"), buildPage(team));
-}
 
 const askManager = () => {
     inquirer.prompt([
@@ -91,6 +89,13 @@ const askIntern = () => {
         team.push(intern);
         mainMenu();
     })
+};
+
+function buildTeam () {
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir);
+    }
+    fs.writeFileSync(outputPath, render(team), "utf-8");
 }
 
 mainMenu();

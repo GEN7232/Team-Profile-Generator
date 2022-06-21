@@ -1,3 +1,61 @@
+function createManagerCard (manager) {
+  return `
+  <div class="card border border-primary border-3 ">
+    <div class="card-body">
+      <h2 class="card-title bg-info">
+        Manager: ${manager.getName()}
+      </h2>
+      <p class="card-text">ID: ${manager.getId()}</p>
+      <a href="mailto:${manager.getEmail()}">
+        <p class="card-text">Email: ${manager.getEmail()}</p>
+      </a>
+      <p class="card-text">Office Number: ${manager.getOfficeNumber()}
+    </div>
+  </div>
+  `
+};
+
+function createEngineerCard (engineer) {
+  return `
+  <div class="card border border-primary border-3">
+    <div class="card-body">
+      <h2 class="card-title bg-info">
+        Engineer: ${engineer.getName()}
+      </h2>
+      <p class="card-text">ID: ${engineer.getId()}</p>
+      <a href="mailto:${engineer.getEmail()}">
+        <p class="card-text">Email: ${engineer.getEmail()}</p>
+      </a>
+      <p class="card-text">GitHub Username: ${engineer.getGitHub()}
+    </div>
+  </div>
+  `
+};
+
+function createInternCard (intern) {
+  return `
+  <div class="card border border-primary border-3">
+    <div class="card-body">
+      <h2 class="card-title bg-info">
+        Intern: ${intern.getName()}
+      </h2>
+      <p class="card-text">ID: ${intern.getId()}</p>
+      <a href="mailto:${intern.getEmail()}">
+        <p class="card-text">Email: ${intern.getEmail()}</p>
+      </a>
+      <p class="card-text">School ${intern.getSchool()}
+    </div>
+  </div>
+  `
+};
+
+function insertTeam (team) {const HTML = [];
+  HTML.push(team.filter(employee => employee.getRole() === "Manager").map(manager => createManagerCard(manager)).join(""));
+  HTML.push(team.filter(employee => employee.getRole() === "Engineer").map(engineer => createEngineerCard(engineer)).join(""));
+  HTML.push(team.filter(employee => employee.getRole() === "Intern").map(intern => createInternCard(intern)).join(""));
+  return HTML.join("");
+};
+
 module.exports = function buildPage(team){
     return `
     <!DOCTYPE html>
@@ -14,9 +72,11 @@ module.exports = function buildPage(team){
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <h1 class="display-4">Team Members</h1>
+    <main class="container d-flex justify-content-around">
+    ${insertTeam(team)}
+    </main>
   </div>
-</div>
-</div>    
+</div> 
 </body>
 </html>
     `
